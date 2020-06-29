@@ -91,13 +91,31 @@ void sequence_switcher(char mode, char edge) {
     sequence = sequence % seq_total;
     switch (sequence) {
       case 0:
-        Keyboard.println("Using Sequence CTRL+m CTRL+m");
+        Keyboard.print("Using Sequence CTRL");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.print("m CTRL");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.println("m");
         break;
       case 1:
-        Keyboard.println("Using Sequence WindowsKey+F4 WindowsKey+F4");
+        Keyboard.print("Using Sequence Windows");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.print("F4 Windows");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.println("F4");
         break;
       case 2:
-        Keyboard.println("Using Sequence CTRL+c CTRL+v");
+        Keyboard.print("Using Sequence CTRL");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.print("c CTRL");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.println("v");
         break;
     }
   }
