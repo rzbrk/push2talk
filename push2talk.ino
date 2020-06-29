@@ -30,9 +30,8 @@
  * two input pins of the microcontroller board as depicted below.
  * 
  * TODO/BUGS:
- *   - Implement config mode to change between pre-defined keyboard sequences.
- *     For now, only one sequence is implemented (CTRL+M, CTRL+M)
- * 
+ *   - Fix issues with keyboard layout. HID.cpp uses US keyboard as default.
+ *     This causes issues with using Keyboard.println() in this program.
  */
 
 #include <Bounce.h>
@@ -74,7 +73,7 @@ void setup() {
 }
 
 //
-int sequence_switcher(int sequence, char mode, char edge) {
+void sequence_switcher(char mode, char edge) {
   int seq_total = 2; // total number of sequnces defined
 
   // mode == p (permutate)
@@ -101,7 +100,6 @@ int sequence_switcher(int sequence, char mode, char edge) {
         break;
     }
   }
-  return sequence;
 }
 
 // Many programs for web conferencing using shortcut CTRL+M for both
@@ -141,7 +139,7 @@ void loop() {
   if (p2t_button.fallingEdge()) {
     //send_win_f4__win_f4('f');
     //send_ctrl_m__ctrl_m('f');
-    sequence = sequence_switcher(sequence, 'e', 'f');
+    sequence_switcher('e', 'f');
   }
   if (conf_button.fallingEdge()) {
     // Do nothing here, change configuration only if we sense a rising
@@ -152,9 +150,9 @@ void loop() {
   if (p2t_button.risingEdge()) {
     //send_win_f4__win_f4('r');
     //send_ctrl_m__ctrl_m('r');
-    sequence = sequence_switcher(sequence, 'e', 'r');
+    sequence_switcher('e', 'r');
   }
   if (conf_button.risingEdge()) {
-    sequence = sequence_switcher(sequence, 'p', 'r');
+    sequence_switcher('p', 'r');
   }
 }
