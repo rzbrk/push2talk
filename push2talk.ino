@@ -83,7 +83,7 @@ void setup() {
 // If updating the sequences the two switch-case statements should be updated
 // accordingly.
 void sequence_switcher(char mode, char edge) {
-  int seq_total = 2; // total number of sequences defined
+  int seq_total = 3; // total number of sequences defined
 
   // mode == p (permutate)
   if (mode == 'p') {
@@ -96,6 +96,9 @@ void sequence_switcher(char mode, char edge) {
       case 1:
         Keyboard.println("Using Sequence WindowsKey+F4 WindowsKey+F4");
         break;
+      case 2:
+        Keyboard.println("Using Sequence CTRL+c CTRL+v");
+        break;
     }
   }
   // mode == e (execute)
@@ -107,6 +110,8 @@ void sequence_switcher(char mode, char edge) {
       case 1:
         send_win_f4__win_f4(edge);
         break;
+      case 2:
+        send_ctrl_c__ctrl_v(edge);
     }
   }
 }
@@ -143,6 +148,29 @@ void send_win_f4__win_f4(char edge) {
   }
 }
 
+// Using the button for copy-paste
+void send_ctrl_c__ctrl_v(char edge) {
+  if (edge == 'f') {
+    Keyboard.set_modifier(MODIFIERKEY_CTRL);
+    Keyboard.send_now();
+    Keyboard.set_key1(KEY_C);
+    Keyboard.send_now();
+    Keyboard.set_modifier(0);
+    Keyboard.set_key1(0);
+    Keyboard.send_now();
+  }
+  if (edge == 'r') {
+    Keyboard.set_modifier(MODIFIERKEY_CTRL);
+    Keyboard.send_now();
+    Keyboard.set_key1(KEY_V);
+    Keyboard.send_now();
+    Keyboard.set_modifier(0);
+    Keyboard.set_key1(0);
+    Keyboard.send_now();
+  }
+}
+
+// Main loop
 void loop() {
   // Update all buttons
   p2t_button.update();
