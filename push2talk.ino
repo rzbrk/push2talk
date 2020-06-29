@@ -72,9 +72,18 @@ void setup() {
   pinMode(conf_pin, INPUT_PULLUP);
 }
 
-//
+// This is the sequnce_switcher function. It has two modes:
+//   - mode "p" (permutate): Switch to next keyboard sequence
+//   - mode "s" (send):      Send the keyboard sequence. In this mode the edge
+//                           type (falling/rising) is used. Depending on the
+//                           selected sequence the corresponding function is
+//                           called.
+// Important: The variable seq_total should match with the defined keyboard
+// sequnces. Each keyboard sequence should be defined in a separate function.
+// If updating the sequences the two switch-case statements should be updated
+// accordingly.
 void sequence_switcher(char mode, char edge) {
-  int seq_total = 2; // total number of sequnces defined
+  int seq_total = 2; // total number of sequences defined
 
   // mode == p (permutate)
   if (mode == 'p') {
@@ -101,6 +110,10 @@ void sequence_switcher(char mode, char edge) {
     }
   }
 }
+
+// Following, the keyboard sequences are defined in dedicated functions. More
+// precicely, a pair of keyboard sequences can be defined, one for the falling
+// edge (key press event) or for the rising edge (key release event).
 
 // Many programs for web conferencing using shortcut CTRL+M for both
 // mute and unmute
