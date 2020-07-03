@@ -35,6 +35,7 @@
  */
 
 #include <Bounce.h>
+#include <EEPROM.h>
 
 // Define buttons, more specific, to which pin the buttons are connected to
 int p2t_pin = 6;      // push-to-talk (p2t) button
@@ -42,9 +43,18 @@ int conf_pin = 7;     // config (conf) button
 // Define the pin where the LED is attached to
 int led_pin = 8;
 
-// Create and initialize a variable holding the selected keyboard sequnce.
-// Later, this variable is used to specify the sequence to use from a list
-// of predefined sequnces.
+// Create and define a variable holding the total number of defined
+// sequnces. This variable MUST match the number of defined sequences!
+int seq_total = 4;
+
+// Create and define the EEPROM address where the selected keyboard
+// sequence ist stored. This way, this variable can be recovered after a
+// power cycle.
+int ee_addr = 100;
+
+// Create a variable holding the selected keyboard sequence.
+// Later in the setup routine this variable is initialized by reading from
+// the above EEPROM address.
 int sequence = 0;
 
 // Create bounce objects to debounce buttons. Debouncing time t_debounce is
@@ -81,9 +91,12 @@ void setup() {
   // For now, use the LED as power indicator. Therefore, just set is to
   // high.
   digitalWrite(led_pin, HIGH);
+
+  // Read the selected sequence saved in the EEPROM
+  //sequence = EEPROM.read(ee_addr) % seq_total;
 }
 
-// This is the sequnce_switcher function. It has two modes:
+// This is the sequence_switcher function. It has two modes:
 //   - mode "p" (permutate): Switch to next keyboard sequence
 //   - mode "s" (send):      Send the keyboard sequence. In this mode the edge
 //                           type (falling/rising) is used. Depending on the
@@ -94,12 +107,14 @@ void setup() {
 // If updating the sequences the two switch-case statements should be updated
 // accordingly.
 void sequence_switcher(char mode, char edge) {
-  int seq_total = 4; // total number of sequences defined
 
   // mode == p (permutate)
   if (mode == 'p') {
+    // Increase sequence
     sequence = sequence + 1;
     sequence = sequence % seq_total;
+    // Save current sequence to EEPROM
+    //EEPROM.write(ee_addr, sequence);
     switch (sequence) {
       case 0:
         Keyboard.print("Using Sequence CTRL");
@@ -147,6 +162,7 @@ void sequence_switcher(char mode, char edge) {
         break;
       case 1:
         send_alt_m__alt_m(edge);
+        break;
       case 2:
         send_win_f4__win_f4(edge);
         break;
