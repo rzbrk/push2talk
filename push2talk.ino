@@ -39,6 +39,8 @@
 // Define buttons, more specific, to which pin the buttons are connected to
 int p2t_pin = 6;      // push-to-talk (p2t) button
 int conf_pin = 7;     // config (conf) button
+// Define the pin where the LED is attached to
+int led_pin = 8;
 
 // Create and initialize a variable holding the selected keyboard sequnce.
 // Later, this variable is used to specify the sequence to use from a list
@@ -53,23 +55,32 @@ Bounce conf_button = Bounce(conf_pin, t_debounce);
 
 void setup() {
 /*
- * Configure the IO ports for the buttons as inputs using the internal
- * pullup resistors.
+
+ * output.
  *
- * GND ------+------------------+
- *           |                  |
- *           +                  +
- *           \                  \
- *            \ p2t              \ conf
- *           +                  +
- *           |                  |
- *           |                  |
- *           o                  o
- *        p2t_pin           conf_pin
+ * GND ------+------------------+-----------------+
+ *           |                  |                 |
+ *           +                  +                +++
+ *           \                  \                | |
+ *            \ p2t              \ conf          | | R_led
+ *           +                  +                +++
+ *           |                  |                 |
+ *           |                  |               --+--
+ *           |                  |                / \
+ *           |                  |               --+--
+ *           |                  |                 |
+ *           |                  |                 |
+ *           o                  o                 o
+ *        p2t_pin           conf_pin           led_pin
  * 
  */
+
   pinMode(p2t_pin, INPUT_PULLUP);
   pinMode(conf_pin, INPUT_PULLUP);
+  pinMode(led_pin, OUTPUT);
+  // For now, use the LED as power indicator. Therefore, just set is to
+  // high.
+  digitalWrite(led_pin, HIGH);
 }
 
 // This is the sequnce_switcher function. It has two modes:
