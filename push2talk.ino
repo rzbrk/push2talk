@@ -94,7 +94,7 @@ void setup() {
 // If updating the sequences the two switch-case statements should be updated
 // accordingly.
 void sequence_switcher(char mode, char edge) {
-  int seq_total = 3; // total number of sequences defined
+  int seq_total = 4; // total number of sequences defined
 
   // mode == p (permutate)
   if (mode == 'p') {
@@ -111,6 +111,15 @@ void sequence_switcher(char mode, char edge) {
         Keyboard.println("m");
         break;
       case 1:
+        Keyboard.print("Using Sequence ALT");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.print("m ALT");
+        Keyboard.press(KEYPAD_PLUS);
+        Keyboard.release(KEYPAD_PLUS);
+        Keyboard.println("m");
+        break;
+      case 2:
         Keyboard.print("Using Sequence Windows");
         Keyboard.press(KEYPAD_PLUS);
         Keyboard.release(KEYPAD_PLUS);
@@ -119,7 +128,7 @@ void sequence_switcher(char mode, char edge) {
         Keyboard.release(KEYPAD_PLUS);
         Keyboard.println("F4");
         break;
-      case 2:
+      case 3:
         Keyboard.print("Using Sequence CTRL");
         Keyboard.press(KEYPAD_PLUS);
         Keyboard.release(KEYPAD_PLUS);
@@ -137,10 +146,13 @@ void sequence_switcher(char mode, char edge) {
         send_ctrl_m__ctrl_m(edge);
         break;
       case 1:
+        send_alt_m__alt_m(edge);
+      case 2:
         send_win_f4__win_f4(edge);
         break;
-      case 2:
+      case 3:
         send_ctrl_c__ctrl_v(edge);
+        break;
     }
   }
 }
@@ -150,7 +162,7 @@ void sequence_switcher(char mode, char edge) {
 // edge (key press event) or for the rising edge (key release event).
 
 // Many programs for web conferencing using shortcut CTRL+M for both
-// mute and unmute
+// mute and unmute, for instance Jitsi
 void send_ctrl_m__ctrl_m(char edge) {
   // for both falling and rising edge send the same keyboard sequence
   if ((edge == 'f') || (edge == 'r')) {
@@ -164,9 +176,22 @@ void send_ctrl_m__ctrl_m(char edge) {
   }
 }
 
+// BigBlueButton unses shortcut ALT+m for both mute and unmute
+void send_alt_m__alt_m(char edge) {
+  if ((edge == 'f') || (edge == 'r')) {
+    Keyboard.set_modifier(MODIFIERKEY_ALT);
+    Keyboard.send_now();
+    Keyboard.set_key1(KEY_M);
+    Keyboard.send_now();
+    Keyboard.set_modifier(0);
+    Keyboard.set_key1(0);
+    Keyboard.send_now();
+  }
+}
+
 // Skye for Business uses WindowsKey+F4, both for mute and unmute
 void send_win_f4__win_f4(char edge) {
-  if ((edge == 'f' || edge == 'r')) {
+  if ((edge == 'f') || (edge == 'r')) {
     Keyboard.set_modifier(MODIFIERKEY_GUI); // WindowsKey
     Keyboard.send_now();
     Keyboard.set_key1(KEY_F4);
