@@ -34,7 +34,7 @@
  *     This causes issues with using Keyboard.println() in this program.
  */
 
-#include <Bounce.h>
+#include <Bounce2.h>
 
 // Define buttons, more specific, to which pin the buttons are connected to
 int p2t_pin = 6;      // push-to-talk (p2t) button
@@ -47,16 +47,12 @@ int led_pin = 8;
 // of predefined sequnces.
 int sequence = 0;
 
-// Create bounce objects to debounce buttons. Debouncing time t_debounce is
-// in milliseconds
-int t_debounce = 10;
-Bounce p2t_button = Bounce(p2t_pin, t_debounce);
-Bounce conf_button = Bounce(conf_pin, t_debounce);
+// Create bounce objects to debounce buttons.
+Bounce p2t_button = Bounce();
+Bounce conf_button = Bounce();
 
 void setup() {
 /*
-
- * output.
  *
  * GND ------+------------------+-----------------+
  *           |                  |                 |
@@ -77,6 +73,16 @@ void setup() {
 
   pinMode(p2t_pin, INPUT_PULLUP);
   pinMode(conf_pin, INPUT_PULLUP);
+  
+  // Define debouncing time in ms
+  int t_debounce = 10;
+  
+  // Setuo the bounce objects
+  p2t_button.attach(p2t_pin);
+  p2t_button.interval(t_debounce);
+  conf_button.attach(conf_pin);
+  conf_button.interval(t_debounce);
+
   pinMode(led_pin, OUTPUT);
   // For now, use the LED as power indicator. Therefore, just set is to
   // high.
