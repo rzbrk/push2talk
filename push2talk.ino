@@ -6,7 +6,7 @@
  * key(s) are pressed/released connected to specific pins of microcontroller.
  * 
  * VERSION:
- * v0.2
+ * v0.3
  * 
  * AUTHOR:
  * (c) Jan Grosser, email@jan-grosser.de
