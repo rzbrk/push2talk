@@ -63,7 +63,11 @@ Bounce conf_button = Bounce();
 
 // Define debouncing time in ms
 int t_debounce = 10;
- 
+
+// Define minimum time a key has to be pressed in ms
+int t_min_pressed = 100;
+
+// Setup routine
 void setup() {
 /*
  *
@@ -192,8 +196,10 @@ void send_ctrl_m__ctrl_m(char edge) {
   if ((edge == 'f') || (edge == 'r')) {
     Keyboard.set_modifier(MODIFIERKEY_CTRL);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_key1(KEY_M);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_modifier(0);
     Keyboard.set_key1(0);
     Keyboard.send_now();
@@ -205,8 +211,10 @@ void send_alt_m__alt_m(char edge) {
   if ((edge == 'f') || (edge == 'r')) {
     Keyboard.set_modifier(MODIFIERKEY_ALT);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_key1(KEY_M);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_modifier(0);
     Keyboard.set_key1(0);
     Keyboard.send_now();
@@ -218,8 +226,10 @@ void send_win_f4__win_f4(char edge) {
   if ((edge == 'f') || (edge == 'r')) {
     Keyboard.set_modifier(MODIFIERKEY_GUI); // WindowsKey
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_key1(KEY_F4);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_modifier(0);
     Keyboard.set_key1(0);
     Keyboard.send_now();
@@ -231,8 +241,10 @@ void send_ctrl_c__ctrl_v(char edge) {
   if (edge == 'f') {
     Keyboard.set_modifier(MODIFIERKEY_CTRL);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_key1(KEY_C);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_modifier(0);
     Keyboard.set_key1(0);
     Keyboard.send_now();
@@ -240,8 +252,10 @@ void send_ctrl_c__ctrl_v(char edge) {
   if (edge == 'r') {
     Keyboard.set_modifier(MODIFIERKEY_CTRL);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_key1(KEY_V);
     Keyboard.send_now();
+    delay(t_min_pressed);
     Keyboard.set_modifier(0);
     Keyboard.set_key1(0);
     Keyboard.send_now();
