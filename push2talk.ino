@@ -61,6 +61,9 @@ int sequence = 0;
 Bounce p2t_button = Bounce();
 Bounce conf_button = Bounce();
 
+// Define debouncing time in ms
+int t_debounce = 10;
+ 
 void setup() {
 /*
  *
@@ -83,9 +86,6 @@ void setup() {
 
   pinMode(p2t_pin, INPUT_PULLUP);
   pinMode(conf_pin, INPUT_PULLUP);
-  
-  // Define debouncing time in ms
-  int t_debounce = 10;
   
   // Setuo the bounce objects
   p2t_button.attach(p2t_pin);
