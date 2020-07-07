@@ -38,19 +38,19 @@
 #include <EEPROM.h>
 
 // Define buttons, more specific, to which pin the buttons are connected to
-int p2t_pin = 6;      // push-to-talk (p2t) button
-int conf_pin = 7;     // config (conf) button
+#define P2T_PIN 6        // push-to-talk (p2t) button
+#define CONF_PIN 7       // config (conf) button
 // Define the pin where the LED is attached to
-int led_pin = 8;
+#define LED_PIN 8
 
-// Create and define a variable holding the total number of defined
+// Create and define a constant holding the total number of defined
 // sequnces. This variable MUST match the number of defined sequences!
-int seq_total = 4;
+#define SEQ_TOTAL 4
 
 // Create and define the EEPROM address where the selected keyboard
-// sequence ist stored. This way, this variable can be recovered after a
+// sequence ist stored. This way, the last sequence can be recovered after a
 // power cycle.
-int ee_addr = 0;
+#define EE_ADDR 0
 
 // Create a variable holding the selected keyboard sequence.
 // Later in the setup routine this variable is initialized by reading from
@@ -62,10 +62,10 @@ Bounce p2t_button = Bounce();
 Bounce conf_button = Bounce();
 
 // Define debouncing time in ms
-int t_debounce = 10;
+#define T_DEBOUNCE 10
 
 // Define minimum time a key has to be pressed in ms
-int t_min_pressed = 100;
+#define t_min_pressed 100
 
 // Setup routine
 void setup() {
@@ -84,26 +84,26 @@ void setup() {
  *           |                  |                 |
  *           |                  |                 |
  *           o                  o                 o
- *        p2t_pin           conf_pin           led_pin
+ *        P2T_PIN           CONF_PIN           LED_PIN
  * 
  */
 
-  pinMode(p2t_pin, INPUT_PULLUP);
-  pinMode(conf_pin, INPUT_PULLUP);
+  pinMode(P2T_PIN, INPUT_PULLUP);
+  pinMode(CONF_PIN, INPUT_PULLUP);
   
   // Setuo the bounce objects
-  p2t_button.attach(p2t_pin);
-  p2t_button.interval(t_debounce);
-  conf_button.attach(conf_pin);
-  conf_button.interval(t_debounce);
+  p2t_button.attach(P2T_PIN);
+  p2t_button.interval(T_DEBOUNCE);
+  conf_button.attach(CONF_PIN);
+  conf_button.interval(T_DEBOUNCE);
 
-  pinMode(led_pin, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
   // For now, use the LED as power indicator. Therefore, just set is to
   // high.
-  digitalWrite(led_pin, HIGH);
+  digitalWrite(LED_PIN, HIGH);
 
   // Read the selected sequence saved in the EEPROM
-  sequence = EEPROM.read(ee_addr) % seq_total;
+  sequence = EEPROM.read(EE_ADDR) % SEQ_TOTAL;
 }
 
 // This is the sequence_switcher function. It has two modes:
@@ -112,7 +112,7 @@ void setup() {
 //                           type (falling/rising) is used. Depending on the
 //                           selected sequence the corresponding function is
 //                           called.
-// Important: The variable seq_total should match with the defined keyboard
+// Important: The constant SEQ_TOTAL should match with the defined keyboard
 // sequnces. Each keyboard sequence should be defined in a separate function.
 // If updating the sequences the two switch-case statements should be updated
 // accordingly.
@@ -122,10 +122,10 @@ void sequence_switcher(char mode, char edge) {
   if (mode == 'p') {
     // Increase sequence
     sequence = sequence + 1;
-    sequence = sequence % seq_total;
+    sequence = sequence % SEQ_TOTAL;
 
     // Save current sequence to EEPROM
-    EEPROM.write(ee_addr, sequence);
+    EEPROM.write(EE_ADDR, sequence);
 
     switch (sequence) {
       case 0:
